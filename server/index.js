@@ -16,7 +16,7 @@ app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/index.html"));
 });
 
-app.post("/mainForm", (req, res) => {
+app.post("/mainForm", async (req, res) => {
   console.log(req.body, "bODY");
 
   let count = 0;
@@ -29,7 +29,10 @@ app.post("/mainForm", (req, res) => {
     }
 
     if (count > 0) {
-      res.sendStatus(200);
+
+      let result = await saveDataToDB();
+
+      res.status(200).json({ "message" : "Successfully saved to DB", result });
     }
 
     res.sendStatus(400);
@@ -37,6 +40,10 @@ app.post("/mainForm", (req, res) => {
 
   res.send("good");
 });
+
+let saveDataToDB = ( ) => {
+    //DB logic / Mongo Or MySQL to save data here
+}
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
